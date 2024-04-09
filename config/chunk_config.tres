@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="ChunkConfig" load_steps=10 format=3 uid="uid://cc7n7f6pmlgaf"]
+
+[ext_resource type="Script" path="res://scripts/resource_scripts/generation_noise.gd" id="1_1ys4q"]
+[ext_resource type="Script" path="res://scripts/resource_scripts/chunk_config.gd" id="1_hep3q"]
+[ext_resource type="Shader" path="res://scripts/shaders/terrain.gdshader" id="1_ljtun"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ej27u"]
+render_priority = 0
+shader = ExtResource("1_ljtun")
+shader_parameter/angle_threshold = 0.65
+shader_parameter/grass_color = Color(0.65098, 0.65098, 0.701961, 1)
+shader_parameter/rock_color = Color(0.32549, 0.776471, 0.321569, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vusng"]
+
+[sub_resource type="Resource" id="Resource_bjea6"]
+script = ExtResource("1_1ys4q")
+name = "main_height"
+noise = SubResource("FastNoiseLite_vusng")
+height_scale = 1.0
+material = SubResource("ShaderMaterial_ej27u")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j36pn"]
+albedo_color = Color(0.701961, 0.701961, 0.701961, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6jva3"]
+noise_type = 2
+frequency = 0.0565
+fractal_gain = -0.34
+cellular_distance_function = 3
+domain_warp_fractal_type = 0
+domain_warp_fractal_octaves = 1
+
+[sub_resource type="Resource" id="Resource_6l4m8"]
+script = ExtResource("1_1ys4q")
+name = "mountain"
+noise = SubResource("FastNoiseLite_6jva3")
+height_scale = 1.5
+material = SubResource("StandardMaterial3D_j36pn")
+
+[resource]
+script = ExtResource("1_hep3q")
+chunk_render_radius = 7
+size = Vector2(250, 250)
+max_height = 20.0
+resolution = Vector2(500, 500)
+generation_seed = 5
+generation_noises = Array[ExtResource("1_1ys4q")]([SubResource("Resource_bjea6"), SubResource("Resource_6l4m8")])

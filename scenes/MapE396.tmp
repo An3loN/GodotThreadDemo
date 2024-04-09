@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://d3ix8k77wwlj3"]
+
+[ext_resource type="Script" path="res://scripts/character_controller.gd" id="1_6j1qh"]
+[ext_resource type="Script" path="res://scripts/map test/map.gd" id="2_vfqa8"]
+[ext_resource type="Script" path="res://scripts/input_controller.gd" id="3_4clth"]
+[ext_resource type="Script" path="res://scripts/map test/map_generator.gd" id="3_afg7b"]
+[ext_resource type="Resource" uid="uid://cc7n7f6pmlgaf" path="res://config/chunk_config.tres" id="3_lq7gv"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1ansv"]
+sky_top_color = Color(0.384314, 0.454902, 0.54902, 1)
+ground_bottom_color = Color(0.384314, 0.454902, 0.54902, 1)
+
+[sub_resource type="Sky" id="Sky_esryv"]
+sky_material = SubResource("ProceduralSkyMaterial_1ansv")
+
+[sub_resource type="Environment" id="Environment_4lr6l"]
+background_mode = 2
+sky = SubResource("Sky_esryv")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 2
+ssr_enabled = true
+ssao_enabled = true
+fog_light_color = Color(0.431373, 0.690196, 0.788235, 1)
+fog_density = 0.001
+fog_sky_affect = 0.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0024
+volumetric_fog_albedo = Color(0.368627, 0.792157, 0.917647, 1)
+volumetric_fog_emission = Color(0.580392, 0.780392, 0.796078, 1)
+volumetric_fog_length = 600.0
+volumetric_fog_ambient_inject = 2.0
+adjustment_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_bricb"]
+
+[node name="MapTester" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+motion_mode = 1
+script = ExtResource("1_6j1qh")
+speed = 400.0
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 50, 50)
+
+[node name="Map" type="Node3D" parent="."]
+script = ExtResource("2_vfqa8")
+chunk_config = ExtResource("3_lq7gv")
+
+[node name="MapGenerator" type="Node" parent="Map"]
+script = ExtResource("3_afg7b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4lr6l")
+camera_attributes = SubResource("CameraAttributesPractical_bricb")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.882398, -0.0314771, 0.46945, -0.402226, 0.467189, 0.787368, -0.244106, -0.883597, 0.399586, 3.59258, 7.71028, 3.29402)
+light_color = Color(0.835294, 0.811765, 0, 1)
+shadow_enabled = true
+
+[node name="InputController" type="Node" parent="."]
+script = ExtResource("3_4clth")

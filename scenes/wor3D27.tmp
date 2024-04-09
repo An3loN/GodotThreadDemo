@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://lnp13g7q10vw"]
+
+[ext_resource type="Script" path="res://scripts/terrain.gd" id="1_rmosq"]
+[ext_resource type="PackedScene" uid="uid://dd6gqau3cb7u4" path="res://scenes/chunk.tscn" id="2_1g0cu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4ymwx"]
+sky_top_color = Color(0.384314, 0.454902, 0.54902, 1)
+ground_bottom_color = Color(0.384314, 0.454902, 0.54902, 1)
+
+[sub_resource type="Sky" id="Sky_esryv"]
+sky_material = SubResource("ProceduralSkyMaterial_4ymwx")
+
+[sub_resource type="Environment" id="Environment_oqf70"]
+background_mode = 2
+sky = SubResource("Sky_esryv")
+reflected_light_source = 2
+ssr_enabled = true
+ssao_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_strkt"]
+
+[node name="World" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 4, 4)
+
+[node name="Terrain" type="Node3D" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("1_rmosq")
+chunk_scene = ExtResource("2_1g0cu")
+player = NodePath("../Camera3D")
+
+[node name="Chunks" type="Node3D" parent="Terrain"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oqf70")
+camera_attributes = SubResource("CameraAttributesPractical_strkt")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.882398, -0.0314771, 0.46945, -0.402226, 0.467189, 0.787368, -0.244106, -0.883597, 0.399586, 3.59258, 7.71028, 3.29402)
+light_color = Color(0.835294, 0.811765, 0, 1)
+shadow_enabled = true
